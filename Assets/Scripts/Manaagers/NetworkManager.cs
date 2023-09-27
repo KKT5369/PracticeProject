@@ -78,7 +78,10 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
 
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
-        throw new NotImplementedException();
+        // JoinSessionLobby 실행 될때 마다 호출 되는거 확인
+        // 다른 방법으로 호출 되는지 체크 필요 리스트 리플레시 기능 
+        Debug.Log("세션 리스트 업데이트 "); 
+        
     }
 
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data)
