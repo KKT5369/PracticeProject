@@ -19,8 +19,8 @@ public class World : NetworkBehaviour
     private NetworkRunner _runner;
     void Start()
     {
-        _runner = NetworkManager.Instance.Runner;
-        _runner.JoinSessionLobby(SessionLobby.Custom,lobbyID:"test");
+        // _runner = NetworkManager.Instance.Runner;
+        // _runner.JoinSessionLobby(SessionLobby.Custom,lobbyID:"test");
         // var gameArg = new StartGameArgs() { GameMode = GameMode.Host, SessionName = "로비룸"};
         // _runner.StartGame(gameArg);
         NetworkManager.Instance.testAction = Test;
