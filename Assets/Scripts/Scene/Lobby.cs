@@ -19,6 +19,7 @@ public class Lobby : MonoBehaviour
     {
         var result = _runner.JoinSessionLobby(SessionLobby.Custom,lobbyID:"TestLobby");
         await UniTask.WaitUntil(() => result.IsCompleted);
+        UIManager.Instance.OpenUI<UILobby>();
     }
     
 }

@@ -171,8 +171,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 150, y: 200}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 300, y: 300}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &3001666120169011590
 GameObject:
@@ -322,7 +322,7 @@ GameObject:
   - component: {fileID: 5360780836863761750}
   - component: {fileID: 4836283746914420132}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: btnJoinRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -578,7 +578,7 @@ GameObject:
   - component: {fileID: 5407738702494868167}
   - component: {fileID: 7669181876421040582}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: btnOption
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -909,7 +909,7 @@ GameObject:
   - component: {fileID: 8855130971386337242}
   - component: {fileID: 5860551750810416672}
   m_Layer: 5
-  m_Name: Button
+  m_Name: btnCreateRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1030,7 +1030,7 @@ GameObject:
   - component: {fileID: 5740892894653414209}
   - component: {fileID: 6792752905196029644}
   m_Layer: 5
-  m_Name: Button (3)
+  m_Name: btnExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1150,6 +1150,7 @@ GameObject:
   - component: {fileID: 2208733480808706140}
   - component: {fileID: 6265831381194396692}
   - component: {fileID: 3162317438946235460}
+  - component: {fileID: 8290670356299532007}
   m_Layer: 5
   m_Name: UILobby
   m_TagString: Untagged
@@ -1241,3 +1242,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8290670356299532007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6514305844457967163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 712547a05958a8d4a903e99b6255b03f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  btnCreateRoom: {fileID: 5860551750810416672}
+  btnJoinRoom: {fileID: 4836283746914420132}
+  btnOption: {fileID: 7669181876421040582}
+  btnExit: {fileID: 6792752905196029644}
