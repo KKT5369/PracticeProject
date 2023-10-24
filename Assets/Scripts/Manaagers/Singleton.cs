@@ -26,10 +26,10 @@ public class SingleTon<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
-    private void Awake()
+    public void Awake()
     {
-        GameObject parentGo = GameObject.Find("Managers");
-        if (parentGo == null)
+        var parentGo = GameObject.Find("Managers");
+        if (!parentGo)
         {
             parentGo = new GameObject("Managers");
             gameObject.transform.parent = parentGo.transform;

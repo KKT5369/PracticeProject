@@ -40,14 +40,14 @@ public class UIManager : SingleTon<UIManager>
     }
     
     // UI GameObject를 반환 해줍니다.
-    public GameObject GetUI<T>()
+    public T GetUI<T>()
     {
         if (UI.TryGetValue(typeof(T).Name, out _uiGo))
         {
-            return _uiGo;
+            return _uiGo.GetComponent<T>();
         }
 
-        return null;
+        return OpenUI<T>();
     }
     
     // 모든 UI를 삭제 합니다.

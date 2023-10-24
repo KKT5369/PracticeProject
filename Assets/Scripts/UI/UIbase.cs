@@ -7,7 +7,7 @@ public class UIbase<T> : MonoBehaviour
 {
     private UIManager UI;
 
-    private void Start()
+    protected void Start()
     {
         UI = UIManager.Instance;
     }

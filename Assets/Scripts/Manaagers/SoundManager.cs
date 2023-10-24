@@ -50,7 +50,8 @@ public class SoundManager : SingleTon<SoundManager>
         }
     }
 
-    private void Awake()
+
+    private void Start()
     {
         Init();
     }
