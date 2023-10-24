@@ -6,22 +6,30 @@ public class UIManager : SingleTon<UIManager>
 {
     private Dictionary<string, GameObject> UI = new();
     GameObject _uiGo;
+    private GameObject _uiContents;
     
     // UI를 찾아서 있으면 활성화 없으면 생성후 저장 합니다.
-    public void OpenUI<T>()
+    public T OpenUI<T>()
     {
         if (UI.TryGetValue(typeof(T).Name, out _uiGo))
         {
             _uiGo.SetActive(true);
+            return _uiGo.GetComponent<T>();
         }
         else
         {
+            if (!_uiContents)
+            {
+                _uiContents = new GameObject(">>>>UICONTENTS<<<<");
+            }
+            
             GameObject go = Resources.Load<GameObject>($"UI/{typeof(T).Name}");
-            var ui = Instantiate(go);
+            var ui = Instantiate(go,_uiContents.transform);
             UI.Add(typeof(T).Name,ui);
+            return ui.GetComponent<T>();
         }
     }
-    
+
     // UI를 찾아서 있으면 비활성화 합니다.
     public void CloseUI<T>()
     {
