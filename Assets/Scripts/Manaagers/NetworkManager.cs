@@ -26,11 +26,11 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
 
     public Action<string> testAction;
 
-    public void Connect()
+    public async void Connect()
     {
         var networkVersion = Convert.ToString($"{NetworkMode}_{Data.Const.NETWORKVERSION}");
         PhotonAppSettings.Instance.AppSettings.AppVersion = networkVersion;
-        _runner.JoinSessionLobby(SessionLobby.Custom,lobbyID:"TestLobby");
+        await _runner.JoinSessionLobby(SessionLobby.Custom,lobbyID:"TestLobby");
     }
     
     
@@ -53,7 +53,7 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
-        Debug.Log("OnInput");
+        
     }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
