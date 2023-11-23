@@ -1,35 +1,27 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Cinemachine;
+using Cysharp.Threading.Tasks;
 using Fusion;
-using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.AddressableAssets;
 
-public class World : NetworkBehaviour
+public class World : SimulationBehaviour
 {
-    [SerializeField] private TMP_Text txtServerStatus;
-    [SerializeField] private TMP_Text txtPlayerCount;
-    [SerializeField] private TMP_Text txtRoomCount;
-
-    [SerializeField] private Button btnStartGame;
-
+    public CinemachineVirtualCamera camera;
     private NetworkObject _networkObject;
-    
     private NetworkRunner _runner;
-    void Start()
+    public GameObject go;
+    private void Awake()
     {
-        btnStartGame.onClick.AddListener((() =>
-        {
-            
-        }));
+        _runner = NetworkManager.Instance.Runner;
     }
 
-    public void Test()
+    private async void Start()
     {
-        txtServerStatus.text = _runner.IsServer ? "호스트" : "게스트";
-        txtPlayerCount.text = Convert.ToString(_runner.SessionInfo.PlayerCount);
-        txtRoomCount.text = _runner.SessionInfo.Name;
-
+        var go = await Addressables.LoadAssetAsync<GameObject>("Player");
+        var playerTf = _runner.Spawn(go, Vector3.up, quaternion.identity).transform;
+        camera.Follow = playerTf;
+        camera.LookAt = playerTf;
     }
+    
 }

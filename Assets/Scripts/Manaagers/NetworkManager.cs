@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Fusion;
 using Fusion.Photon.Realtime;
 using Fusion.Sockets;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.SceneManagement;
 
 public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallbacks
 {
@@ -25,27 +29,21 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     public NetworkMode NetworkMode { get;  set; }
     
     public List<SessionInfo> sessionList = new();
-    public Action<string> testAction;
+    public Action testAction;
 
     public async void Connect()
     {
         var networkVersion = Convert.ToString($"{NetworkMode}_{Data.Const.NETWORKVERSION}");
         PhotonAppSettings.Instance.AppSettings.AppVersion = networkVersion;
         await _runner.JoinSessionLobby(SessionLobby.Custom,lobbyID:"Lobby");
-        
     }
-    
-    
-    
-    
+
     #region 네트워크 콜백 함수
 
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         print($"플레이어 입장.. ");
-        var ui = UIManager.Instance.GetUI<UILobby>();
-        ui.serverRemoteStatus.text = $"{runner.SessionInfo.Name} 에 입장...";
-
+        
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -105,8 +103,8 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
         // 다른 방법으로 호출 되는지 체크 필요 리스트 리플레시 기능 
         Debug.Log($"세션 리스트 업데이트");
         this.sessionList = sessionList;
-        var ui = UIManager.Instance.GetUI<UILobby>();
-        ui.roomCount.text = string.Format($"{sessionList.Count}");
+        // var ui = UIManager.Instance.GetUI<UILobby>();
+        // ui.roomCount.text = string.Format($"{sessionList.Count}");
     }
 
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data)

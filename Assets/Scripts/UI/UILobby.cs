@@ -29,7 +29,7 @@ public class UILobby : UIbase<UILobby>
     void SetAddListener()
     {
         btnCreateRoom.onClick.AddListener(CreateRoom);
-        btnJoinRoom.onClick.AddListener((() =>
+        btnJoinRoom.onClick.AddListener((async () =>
         {
             Debug.Log("방입장 clicked");
 
@@ -45,8 +45,9 @@ public class UILobby : UIbase<UILobby>
                 Scene = SceneManager.GetActiveScene().buildIndex,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
             };
-            NetworkManager.Instance.testAction = (v) => { roomCount.text = v; };
-            _runner.StartGame(startGameArgs);
+            await _runner.StartGame(startGameArgs);
+        
+            SceneManager.LoadScene("GameScene");
         }));
         btnExit.onClick.AddListener((() => Application.Quit()));
         btnOption.onClick.AddListener((() =>
@@ -55,7 +56,7 @@ public class UILobby : UIbase<UILobby>
         }));
     }
     
-    void CreateRoom()
+    async void CreateRoom()
     {
         if (!_runner.LobbyInfo.IsValid)
         {
@@ -65,12 +66,17 @@ public class UILobby : UIbase<UILobby>
         var startGameArgs = new StartGameArgs()
         {
             GameMode = GameMode.Host,
-            SessionName = $"test_{Random.Range(1,50)}",
+            SessionName = $"test_{Random.Range(1, 50)}",
             PlayerCount = 2,
             IsOpen = true,
             Scene = SceneManager.GetActiveScene().buildIndex,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
         };
-        _runner.StartGame(startGameArgs);
+        await _runner.StartGame(startGameArgs);
+        
+        
+        
+        SceneManager.LoadScene("GameScene");
+        
     }
 }
