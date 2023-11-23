@@ -17,10 +17,12 @@ public class UILobby : UIbase<UILobby>
     [SerializeField] private Button btnOption;
     [SerializeField] private Button btnExit;
 
-    private new void Start()
+    private NetworkRunner _runner;
+
+    private new void Awake()
     {
-        base.Start();
-        NetworkManager.Instance.testAction = (string v) => { roomCount.text = v; };
+        base.Awake();
+        _runner = NetworkManager.Instance.Runner;
         SetAddListener();
     }
 
@@ -30,8 +32,12 @@ public class UILobby : UIbase<UILobby>
         btnJoinRoom.onClick.AddListener((() =>
         {
             Debug.Log("방입장 clicked");
-            if (!NetworkManager.Instance.Runner.IsConnectedToServer)
+
+            if (NetworkManager.Instance.sessionList.Count == 0 || !_runner.LobbyInfo.IsValid)
+            {
+                print("입장불가");
                 return;
+            }
             
             var startGameArgs = new StartGameArgs()
             {
@@ -39,17 +45,21 @@ public class UILobby : UIbase<UILobby>
                 Scene = SceneManager.GetActiveScene().buildIndex,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
             };
-            NetworkManager.Instance.testAction = (string v) => { roomCount.text = v; };
-            NetworkManager.Instance.Runner.StartGame(startGameArgs);
+            NetworkManager.Instance.testAction = (v) => { roomCount.text = v; };
+            _runner.StartGame(startGameArgs);
+        }));
+        btnExit.onClick.AddListener((() => Application.Quit()));
+        btnOption.onClick.AddListener((() =>
+        {
+            
         }));
     }
     
     void CreateRoom()
     {
-        if (!NetworkManager.Instance.Runner.IsRunning)
+        if (!_runner.LobbyInfo.IsValid)
         {
-            Debug.Log("??");
-            return;    
+            return;
         }
         
         var startGameArgs = new StartGameArgs()
@@ -61,6 +71,6 @@ public class UILobby : UIbase<UILobby>
             Scene = SceneManager.GetActiveScene().buildIndex,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
         };
-        NetworkManager.Instance.Runner.StartGame(startGameArgs);
+        _runner.StartGame(startGameArgs);
     }
 }

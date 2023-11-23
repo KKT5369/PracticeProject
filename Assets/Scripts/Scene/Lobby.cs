@@ -15,8 +15,8 @@ public class Lobby : MonoBehaviour
     void Init()
     {
         _runner = NetworkManager.Instance.Runner;
-        UIManager.Instance.OpenUI<UILobby>();
         NetworkManager.Instance.NetworkMode = networkMode;
         NetworkManager.Instance.Connect();
+        UIManager.Instance.OpenUI<UILobby>();
     }
 }

@@ -23,14 +23,16 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     }
     
     public NetworkMode NetworkMode { get;  set; }
-
+    
+    public List<SessionInfo> sessionList = new();
     public Action<string> testAction;
 
     public async void Connect()
     {
         var networkVersion = Convert.ToString($"{NetworkMode}_{Data.Const.NETWORKVERSION}");
         PhotonAppSettings.Instance.AppSettings.AppVersion = networkVersion;
-        await _runner.JoinSessionLobby(SessionLobby.Custom,lobbyID:"TestLobby");
+        await _runner.JoinSessionLobby(SessionLobby.Custom,lobbyID:"Lobby");
+        
     }
     
     
@@ -66,14 +68,14 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
         Debug.Log($"OnShutdown >>> { shutdownReason }");
 
     }
-
+    
     public void OnConnectedToServer(NetworkRunner runner)
     {
         print($"서버 연결 ");
         var ui = UIManager.Instance.GetUI<UILobby>();
         ui.serverRemoteStatus.text = "서버에 연결됨";
     }
-
+    
     public void OnDisconnectedFromServer(NetworkRunner runner)
     {
         print($"서버 연결 해제.. ");
@@ -96,14 +98,15 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     {
         throw new NotImplementedException();
     }
-
+    
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
         // JoinSessionLobby 실행 될때 마다 호출 되는거 확인
         // 다른 방법으로 호출 되는지 체크 필요 리스트 리플레시 기능 
         Debug.Log($"세션 리스트 업데이트");
-        UIManager.Instance.GetUI<UILobby>();
-        testAction?.Invoke(Convert.ToString(sessionList.Count));
+        this.sessionList = sessionList;
+        var ui = UIManager.Instance.GetUI<UILobby>();
+        ui.roomCount.text = string.Format($"{sessionList.Count}");
     }
 
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data)

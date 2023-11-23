@@ -1,9 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Data;
-using Fusion;
-using Fusion.Photon.Realtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,9 +9,8 @@ public class UICreateRoom : UIbase<UICreateRoom>
     [SerializeField] private Button btnCreate;
     [SerializeField] private Button btnCancel;
 
-    private new void Start()
+    private void Start()
     {
-        base.Start();
         SetAddListener();
     }
 
