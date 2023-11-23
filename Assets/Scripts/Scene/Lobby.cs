@@ -1,5 +1,7 @@
+using Cysharp.Threading.Tasks;
 using Fusion;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class Lobby : MonoBehaviour
 {
@@ -12,8 +14,9 @@ public class Lobby : MonoBehaviour
         Init();
     }
 
-    void Init()
+    async void Init()
     {
+        NetworkManager.Instance.playerPre = await Addressables.LoadAssetAsync<GameObject>("Player");
         _runner = NetworkManager.Instance.Runner;
         NetworkManager.Instance.NetworkMode = networkMode;
         NetworkManager.Instance.Connect();

@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
+using Data;
 using Fusion;
 using Fusion.Photon.Realtime;
 using Fusion.Sockets;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.SceneManagement;
 
 public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallbacks
 {
@@ -30,20 +27,19 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     
     public List<SessionInfo> sessionList = new();
     public Action testAction;
-
+    public GameObject playerPre;
     public async void Connect()
     {
-        var networkVersion = Convert.ToString($"{NetworkMode}_{Data.Const.NETWORKVERSION}");
+        var networkVersion = Convert.ToString($"{NetworkMode}_{Const.NETWORKVERSION}");
         PhotonAppSettings.Instance.AppSettings.AppVersion = networkVersion;
         await _runner.JoinSessionLobby(SessionLobby.Custom,lobbyID:"Lobby");
     }
 
     #region 네트워크 콜백 함수
 
-    public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         print($"플레이어 입장.. ");
-        
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -70,6 +66,7 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     public void OnConnectedToServer(NetworkRunner runner)
     {
         print($"서버 연결 ");
+        print(runner.SessionInfo.Name);
         var ui = UIManager.Instance.GetUI<UILobby>();
         ui.serverRemoteStatus.text = "서버에 연결됨";
     }
