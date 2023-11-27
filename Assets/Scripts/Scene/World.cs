@@ -1,30 +1,50 @@
 using Cinemachine;
-using Cysharp.Threading.Tasks;
 using Fusion;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
-public class World : SimulationBehaviour,ISpawned
+public class World : SimulationBehaviour
 {
     public CinemachineVirtualCamera camera;
     private NetworkObject _networkObject;
     private NetworkRunner _runner;
-    private async void Awake()
+    private StartGameArgs _startGameArgs;
+    private void Awake()
     {
         _runner = NetworkManager.Instance.Runner;
-
-        var go = NetworkManager.Instance.playerPre;
-        var player = _runner.Spawn(go, Vector3.up, quaternion.identity);
-        
-        camera.Follow = camera.LookAt = player.transform;
+        Init();
+        //camera.Follow = camera.LookAt = player.transform;
     }
 
-
-    public void Spawned()
+    async void Init()
     {
-        var go = NetworkManager.Instance.playerPre;
-        _runner.Spawn(go, Vector3.up, quaternion.identity);
+        switch (NetworkManager.Instance.gameMode)
+        {
+            case GameMode.Host:
+                _startGameArgs = new StartGameArgs()
+                {
+                    GameMode = GameMode.Host,
+                    SessionName = $"test_{Random.Range(1, 50)}",
+                    PlayerCount = 2,
+                    IsOpen = true,
+                    Scene = SceneManager.GetActiveScene().buildIndex,
+                    SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+                };
+                await _runner.StartGame(_startGameArgs);
+                break;
+            case GameMode.Client:
+                _startGameArgs = new StartGameArgs()
+                {
+                    GameMode = GameMode.Client,
+                    Scene = SceneManager.GetActiveScene().buildIndex,
+                    SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+                };
+                await _runner.StartGame(_startGameArgs);
+                break;
+
+        }
+        
+        
     }
+    
 }

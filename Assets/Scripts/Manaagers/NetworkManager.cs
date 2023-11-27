@@ -4,7 +4,9 @@ using Data;
 using Fusion;
 using Fusion.Photon.Realtime;
 using Fusion.Sockets;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallbacks
 {
@@ -27,9 +29,12 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     
     public List<SessionInfo> sessionList = new();
     public Action testAction;
+    public GameMode gameMode;
     public GameObject playerPre;
+    public NetworkInputData data;
     public async void Connect()
     {
+        data = new NetworkInputData();
         var networkVersion = Convert.ToString($"{NetworkMode}_{Const.NETWORKVERSION}");
         PhotonAppSettings.Instance.AppSettings.AppVersion = networkVersion;
         await _runner.JoinSessionLobby(SessionLobby.Custom,lobbyID:"Lobby");
@@ -40,6 +45,7 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         print($"플레이어 입장.. ");
+        runner.Spawn(playerPre, Vector3.up, quaternion.identity, player);
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -49,7 +55,21 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
+        Ray ray;
+        RaycastHit hit;
+
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        bool isOverGameObj = EventSystem.current.IsPointerOverGameObject();
         
+        if (Physics.Raycast(ray,out hit,Mathf.Infinity) && !isOverGameObj)
+        {
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Floor"))
+            {
+                data = new NetworkInputData();
+                input.Set(data);
+            }
+        }
     }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
@@ -60,22 +80,19 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
         Debug.Log($"OnShutdown >>> { shutdownReason }");
-
     }
     
     public void OnConnectedToServer(NetworkRunner runner)
     {
         print($"서버 연결 ");
         print(runner.SessionInfo.Name);
-        var ui = UIManager.Instance.GetUI<UILobby>();
-        ui.serverRemoteStatus.text = "서버에 연결됨";
+        // var ui = UIManager.Instance.GetUI<UILobby>();
+        // ui.serverRemoteStatus.text = "서버에 연결됨";
     }
     
     public void OnDisconnectedFromServer(NetworkRunner runner)
     {
         print($"서버 연결 해제.. ");
-        var ui = UIManager.Instance.GetUI<UILobby>();
-        ui.serverRemoteStatus.text = "연결 끊김";
     }
 
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
@@ -100,8 +117,11 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
         // 다른 방법으로 호출 되는지 체크 필요 리스트 리플레시 기능 
         Debug.Log($"세션 리스트 업데이트");
         this.sessionList = sessionList;
-        // var ui = UIManager.Instance.GetUI<UILobby>();
-        // ui.roomCount.text = string.Format($"{sessionList.Count}");
+        // var uiLobby = UIManager.Instance.GetUI<UILobby>();
+        // if (uiLobby)
+        // {
+        //     uiLobby.SetRemoteStatus("연결 완료", sessionList.Count.ToString());
+        // }
     }
 
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data)
@@ -128,6 +148,8 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     {
         Debug.Log("씬로드 start");
     }
+    
+    
     #endregion
     
 }

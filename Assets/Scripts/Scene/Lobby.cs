@@ -1,11 +1,13 @@
+using System.Collections;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-public class Lobby : MonoBehaviour
+public class Lobby : NetworkSceneManagerBase
 {
     [SerializeField] private NetworkMode networkMode;
+    [SerializeField] private SceneRef sceneRef;
     private NetworkRunner _runner;
     
     
@@ -21,5 +23,10 @@ public class Lobby : MonoBehaviour
         NetworkManager.Instance.NetworkMode = networkMode;
         NetworkManager.Instance.Connect();
         UIManager.Instance.OpenUI<UILobby>();
+    }
+
+    protected override IEnumerator SwitchScene(SceneRef prevScene, SceneRef newScene, FinishedLoadingDelegate finished)
+    {
+        throw new System.NotImplementedException();
     }
 }

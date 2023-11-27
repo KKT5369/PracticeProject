@@ -38,16 +38,9 @@ public class UILobby : UIbase<UILobby>
                 print("입장불가");
                 return;
             }
-            
-            var startGameArgs = new StartGameArgs()
-            {
-                GameMode = GameMode.Client,
-                Scene = SceneManager.GetActiveScene().buildIndex,
-                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
-            };
-            await _runner.StartGame(startGameArgs);
-        
+            NetworkManager.Instance.gameMode = GameMode.Client;
             SceneManager.LoadScene("GameScene");
+
         }));
         btnExit.onClick.AddListener((() => Application.Quit()));
         btnOption.onClick.AddListener((() =>
@@ -55,28 +48,21 @@ public class UILobby : UIbase<UILobby>
             
         }));
     }
-    
+
     async void CreateRoom()
     {
         if (!_runner.LobbyInfo.IsValid)
         {
             return;
         }
-        
-        var startGameArgs = new StartGameArgs()
-        {
-            GameMode = GameMode.Host,
-            SessionName = $"test_{Random.Range(1, 50)}",
-            PlayerCount = 2,
-            IsOpen = true,
-            Scene = SceneManager.GetActiveScene().buildIndex,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
-        };
-        await _runner.StartGame(startGameArgs);
-        
-        
-        
+
+        NetworkManager.Instance.gameMode = GameMode.Host;
         SceneManager.LoadScene("GameScene");
-        
+    }
+
+    public void SetRemoteStatus(string status,string count)
+    {
+        serverRemoteStatus.text = status;
+        roomCount.text = count;
     }
 }

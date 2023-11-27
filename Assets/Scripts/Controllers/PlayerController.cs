@@ -16,6 +16,10 @@ public class PlayerController : NetworkBehaviour
 
     private void Update()
     {
+        if (!Runner.IsPlayer) 
+            return;
+        
+
         if (Input.GetMouseButtonUp(0))
         {
             Move();
@@ -24,20 +28,18 @@ public class PlayerController : NetworkBehaviour
 
     void Move()
     {
-        Ray ray;
-        RaycastHit hit;
-
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        bool isOverGameObj = EventSystem.current.IsPointerOverGameObject();
         
-        if (Physics.Raycast(ray,out hit,Mathf.Infinity) && !isOverGameObj)
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        _movePos = NetworkManager.Instance.data.movePos;
+        if (_movePos == null)
         {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Floor"))
-            {
-                _movePos = hit.point;
-                _navMeshAgent.SetDestination(_movePos);
-            }
+            return;
         }
+        _navMeshAgent.SetDestination(_movePos);
+
+
     }
 }
