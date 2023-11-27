@@ -30,7 +30,6 @@ public class PlayerController : NetworkBehaviour
     {
         
     }
-
     public override void FixedUpdateNetwork()
     {
         _movePos = NetworkManager.Instance.data.movePos;
