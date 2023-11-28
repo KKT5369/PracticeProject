@@ -29,8 +29,7 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     public GameMode gameMode;
     public GameObject playerPre;
     public NetworkInputData data;
-    public Action<Transform> cameraAction;
-    private Dictionary<PlayerRef, NetworkObject> _players;
+    private Dictionary<PlayerRef, NetworkObject> _players = new();
     public async void Connect()
     {
         data = new NetworkInputData();

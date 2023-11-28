@@ -1,4 +1,5 @@
 using System;
+using Cinemachine;
 using Data;
 using Fusion;
 using UnityEngine;
@@ -10,15 +11,27 @@ public class PlayerController : NetworkBehaviour
     private NavMeshAgent _navMeshAgent;
     private Vector3 _movePos;
     private Animator _animator;
-
+    private NetworkObject networkObject;
+    float turnSmoothTime = 0.1f;
+    float turnSmoothVelocity;
+    
     void Awake()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _animator = transform.GetChild(0).gameObject.GetComponent<Animator>();
+        networkObject = GetComponent<NetworkObject>();
     }
+
+    private void Start()
+    {
+        if (networkObject.HasInputAuthority)
+        {
+            var camera = FindObjectOfType<CinemachineVirtualCamera>();
+            camera.Follow = camera.LookAt = transform;
+        }
+    }
+
     
-    float turnSmoothTime = 0.1f;
-    float turnSmoothVelocity;
     public override void FixedUpdateNetwork()
     {
         if (GetInput<NetworkInputData>(out var input))
