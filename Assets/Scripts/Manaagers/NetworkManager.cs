@@ -30,6 +30,7 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     public GameObject playerPre;
     public NetworkInputData data;
     public Action<Transform> cameraAction;
+    private Dictionary<PlayerRef, NetworkObject> _players;
     public async void Connect()
     {
         data = new NetworkInputData();
@@ -43,12 +44,18 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         print($"플레이어 입장.. ");
-        runner.Spawn(playerPre, Vector3.up, quaternion.identity, player);
+        var go = runner.Spawn(playerPre, Vector3.up, quaternion.identity, player);
+        _players.Add(player,go);
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
         print($"플레이어 퇴장.. ");
+        if (_players.TryGetValue(player,out var go))
+        {
+            runner.Despawn(go);
+            _players.Remove(player);
+        }
     }
     
     public void OnInput(NetworkRunner runner, NetworkInput input)
