@@ -29,7 +29,7 @@ public class UILobby : UIbase<UILobby>
     void SetAddListener()
     {
         btnCreateRoom.onClick.AddListener(CreateRoom);
-        btnJoinRoom.onClick.AddListener((async () =>
+        btnJoinRoom.onClick.AddListener((() =>
         {
             Debug.Log("방입장 clicked");
 
@@ -49,7 +49,7 @@ public class UILobby : UIbase<UILobby>
         }));
     }
 
-    async void CreateRoom()
+    void CreateRoom()
     {
         if (!_runner.LobbyInfo.IsValid)
         {

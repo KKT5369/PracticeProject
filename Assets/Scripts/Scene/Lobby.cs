@@ -4,10 +4,9 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-public class Lobby : NetworkSceneManagerBase
+public class Lobby : MonoBehaviour
 {
     [SerializeField] private NetworkMode networkMode;
-    [SerializeField] private SceneRef sceneRef;
     private NetworkRunner _runner;
     
     
@@ -18,16 +17,11 @@ public class Lobby : NetworkSceneManagerBase
 
     async void Init()
     {
-        NetworkManager.Instance.playerPre = await Addressables.LoadAssetAsync<GameObject>("Player");
         _runner = NetworkManager.Instance.Runner;
+        NetworkManager.Instance.playerPre = await Addressables.LoadAssetAsync<GameObject>("Player");
         NetworkManager.Instance.NetworkMode = networkMode;
         NetworkManager.Instance.Connect();
         UIManager.Instance.OpenUI<UILobby>();
         InputManager.Instance.Init();
-    }
-
-    protected override IEnumerator SwitchScene(SceneRef prevScene, SceneRef newScene, FinishedLoadingDelegate finished)
-    {
-        throw new System.NotImplementedException();
     }
 }
