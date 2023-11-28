@@ -43,8 +43,7 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         print($"플레이어 입장.. ");
-        var playerTf = runner.Spawn(playerPre, Vector3.up, quaternion.identity, player).transform;
-        cameraAction?.Invoke(playerTf);
+        runner.Spawn(playerPre, Vector3.up, quaternion.identity, player);
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)

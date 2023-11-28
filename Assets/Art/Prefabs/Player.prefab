@@ -60,6 +60,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 8459176226794397961}
   - {fileID: 8425741191464954875}
+  - {fileID: 4742988293951324806}
   SimulationBehaviours: []
 --- !u!195 &3911109692254106621
 NavMeshAgent:
@@ -190,7 +191,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3116972417662467273, guid: a9c77110a045add4b81e011ab6663e9c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4742988293951324806}
   m_SourcePrefab: {fileID: 100100000, guid: a9c77110a045add4b81e011ab6663e9c, type: 3}
 --- !u!4 &1097580081343679671 stripped
 Transform:
@@ -198,3 +203,39 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1306483122739085933}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4134368900196220580 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3116972417662467273, guid: a9c77110a045add4b81e011ab6663e9c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1306483122739085933}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4742988293951324806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4134368900196220580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 506319458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  Animator: {fileID: 0}
+  TotalWords: 1
+  SyncSettings: 79
+  FloatAccuracy:
+    _value: 0
+    _inverse: 0
+    _hash: -814817977
+  TimeAccuracy:
+    _value: 0
+    _inverse: 0
+    _hash: 1061325578
+  WeightAccuracy:
+    _value: 0
+    _inverse: 0
+    _hash: -814817977
+  StateHashes: 000000002b1a167c7940695520e23b685928a8ce
+  TriggerHashes: 00000000
