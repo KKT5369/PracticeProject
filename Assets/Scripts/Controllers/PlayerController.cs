@@ -1,3 +1,5 @@
+using System;
+using Data;
 using Fusion;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,36 +11,24 @@ public class PlayerController : NetworkBehaviour
     private Vector3 _movePos;
     
 
-    void Start()
+    void Awake()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
     }
+    
 
-    private void Update()
-    {
-        if (!Runner.IsPlayer) 
-            return;
-        
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            Move();
-        }
-    }
-
-    void Move()
-    {
-        
-    }
     public override void FixedUpdateNetwork()
     {
-        _movePos = NetworkManager.Instance.data.movePos;
-        if (_movePos == null)
+        if (GetInput<NetworkInputData>(out var input))
         {
-            return;
+            if (Input.GetMouseButtonDown(0))
+            {
+                _navMeshAgent.SetDestination(input.moveTargerPos);
+            }
+
+            Vector3 worldMovement = transform.TransformDirection(input.inputVec3);
+            _navMeshAgent.Move(worldMovement * _navMeshAgent.speed * Time.deltaTime );
         }
-        _navMeshAgent.SetDestination(_movePos);
-
-
     }
+    
 }

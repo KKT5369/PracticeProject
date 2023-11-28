@@ -26,7 +26,6 @@ public class UISampleScene : MonoBehaviour
         _runner = NetworkManager.Instance.Runner;
         NetworkManager.Instance.NetworkMode = networkMode;
         NetworkManager.Instance.Connect();
-        NetworkManager.Instance.testAction = CreateAvatar;
         SetAddListener();
         
     }

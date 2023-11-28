@@ -25,7 +25,7 @@ public class World : SimulationBehaviour
                 {
                     GameMode = GameMode.Host,
                     SessionName = $"test_{Random.Range(1, 50)}",
-                    PlayerCount = 2,
+                    PlayerCount = 5,
                     IsOpen = true,
                     Scene = SceneManager.GetActiveScene().buildIndex,
                     SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()

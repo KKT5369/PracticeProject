@@ -28,7 +28,6 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     public NetworkMode NetworkMode { get;  set; }
     
     public List<SessionInfo> sessionList = new();
-    public Action testAction;
     public GameMode gameMode;
     public GameObject playerPre;
     public NetworkInputData data;
@@ -50,23 +49,28 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        print($"플레이어 퇴장.. "); 
+        print($"플레이어 퇴장.. ");
     }
-
+    
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
+        data.inputVec3 = InputManager.Instance.InputVector;
+        input.Set(data);
+        
+        // 마우스 이동 로직 
         Ray ray;
         RaycastHit hit;
 
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         bool isOverGameObj = EventSystem.current.IsPointerOverGameObject();
-        
-        if (Physics.Raycast(ray,out hit,Mathf.Infinity) && !isOverGameObj)
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity) && !isOverGameObj)
         {
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Floor"))
             {
                 data = new NetworkInputData();
+                data.moveTargerPos = hit.point;
                 input.Set(data);
             }
         }

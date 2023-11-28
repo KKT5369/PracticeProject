@@ -23,6 +23,7 @@ public class Lobby : NetworkSceneManagerBase
         NetworkManager.Instance.NetworkMode = networkMode;
         NetworkManager.Instance.Connect();
         UIManager.Instance.OpenUI<UILobby>();
+        InputManager.Instance.Init();
     }
 
     protected override IEnumerator SwitchScene(SceneRef prevScene, SceneRef newScene, FinishedLoadingDelegate finished)
