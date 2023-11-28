@@ -12,8 +12,9 @@ public class World : SimulationBehaviour
     private void Awake()
     {
         _runner = NetworkManager.Instance.Runner;
+        NetworkManager.Instance.cameraAction = SetCamera;
         Init();
-        //camera.Follow = camera.LookAt = player.transform;
+        
     }
 
     async void Init()
@@ -41,10 +42,11 @@ public class World : SimulationBehaviour
                 };
                 await _runner.StartGame(_startGameArgs);
                 break;
-
         }
-        
-        
     }
-    
+
+    public void SetCamera(Transform target)
+    {
+        camera.Follow = camera.LookAt = target;
+    }
 }

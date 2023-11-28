@@ -6,7 +6,6 @@ using Fusion.Photon.Realtime;
 using Fusion.Sockets;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallbacks
 {
@@ -26,11 +25,11 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     }
     
     public NetworkMode NetworkMode { get;  set; }
-    
     public List<SessionInfo> sessionList = new();
     public GameMode gameMode;
     public GameObject playerPre;
     public NetworkInputData data;
+    public Action<Transform> cameraAction;
     public async void Connect()
     {
         data = new NetworkInputData();
@@ -44,7 +43,8 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         print($"플레이어 입장.. ");
-        runner.Spawn(playerPre, Vector3.up, quaternion.identity, player);
+        var playerTf = runner.Spawn(playerPre, Vector3.up, quaternion.identity, player).transform;
+        cameraAction?.Invoke(playerTf);
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
