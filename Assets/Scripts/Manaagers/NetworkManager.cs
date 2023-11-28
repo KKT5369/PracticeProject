@@ -58,22 +58,22 @@ public class NetworkManager : SingleTon<NetworkManager> , INetworkRunnerCallback
         input.Set(data);
         
         // 마우스 이동 로직 
-        Ray ray;
-        RaycastHit hit;
-
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        bool isOverGameObj = EventSystem.current.IsPointerOverGameObject();
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity) && !isOverGameObj)
-        {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Floor"))
-            {
-                data = new NetworkInputData();
-                data.moveTargerPos = hit.point;
-                input.Set(data);
-            }
-        }
+        // Ray ray;
+        // RaycastHit hit;
+        //
+        // ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //
+        // bool isOverGameObj = EventSystem.current.IsPointerOverGameObject();
+        //
+        // if (Physics.Raycast(ray, out hit, Mathf.Infinity) && !isOverGameObj)
+        // {
+        //     if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Floor"))
+        //     {
+        //         data = new NetworkInputData();
+        //         data.moveTargerPos = hit.point;
+        //         input.Set(data);
+        //     }
+        // }
     }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)

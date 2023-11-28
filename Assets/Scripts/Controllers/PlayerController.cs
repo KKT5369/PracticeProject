@@ -21,10 +21,10 @@ public class PlayerController : NetworkBehaviour
     {
         if (GetInput<NetworkInputData>(out var input))
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                _navMeshAgent.SetDestination(input.moveTargerPos);
-            }
+            // if (Input.GetMouseButtonDown(0))
+            // {
+            //     _navMeshAgent.SetDestination(input.moveTargerPos);
+            // }
 
             Vector3 worldMovement = transform.TransformDirection(input.inputVec3);
             _navMeshAgent.Move(worldMovement * _navMeshAgent.speed * Time.deltaTime );
